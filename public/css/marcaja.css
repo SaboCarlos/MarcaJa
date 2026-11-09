@@ -1,0 +1,181 @@
+/*
+ * MarcaJá — complemento em CSS3 ao Bootstrap 5.
+ * O Bootstrap trata da grelha e dos componentes; aqui fica só o que ele não tem:
+ * variáveis, gradientes, transições, CSS Grid, animações e a página de login com foto.
+ */
+
+:root {
+    --mj-primaria: #0d6efd;
+    --mj-secundaria: #20c997;
+    --mj-gradiente: linear-gradient(135deg, var(--mj-primaria), var(--mj-secundaria));
+    --mj-sombra: 0 .75rem 2rem rgba(13, 110, 253, .10);
+    --mj-raio: 1rem;
+}
+
+/* ---------- Base ---------- */
+html { scroll-behavior: smooth; }
+
+/* Letras grandes (botão "A+"): o Bootstrap usa rem, por isso tudo cresce em proporção */
+html.letras-grandes { font-size: 118.75%; }
+html.letras-grandes .btn,
+html.letras-grandes .form-control,
+html.letras-grandes .form-select { padding-block: .6rem; }
+
+body {
+    min-height: 100vh;
+    background:
+        radial-gradient(circle at 0 0, rgba(13, 110, 253, .07), transparent 35rem),
+        radial-gradient(circle at 100% 100%, rgba(32, 201, 151, .07), transparent 30rem),
+        var(--bs-tertiary-bg);
+    background-attachment: fixed;
+}
+
+.card { border-radius: var(--mj-raio); border-color: rgba(0, 0, 0, .06); }
+
+:focus-visible { outline: 3px solid rgba(13, 110, 253, .45); outline-offset: 2px; }
+
+/* ---------- Cabeçalho ---------- */
+.mj-topo {
+    backdrop-filter: saturate(180%) blur(8px);
+    background-color: rgba(255, 255, 255, .85) !important;
+}
+.mj-logo {
+    display: inline-grid;
+    place-items: center;
+    width: 2.25rem;
+    aspect-ratio: 1;
+    border-radius: .65rem;
+    background: var(--mj-gradiente);
+    color: #fff;
+    font-weight: 700;
+}
+
+/* ---------- Efeitos ---------- */
+.mj-elevar { transition: transform .2s ease, box-shadow .2s ease; }
+.mj-elevar:hover { transform: translateY(-3px); box-shadow: var(--mj-sombra); }
+
+.mj-gradiente { background: var(--mj-gradiente); color: #fff; border: 0; }
+
+.mj-texto-gradiente {
+    background: var(--mj-gradiente);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.mj-titulo { font-size: clamp(2rem, 4vw + 1rem, 3.25rem); line-height: 1.1; }
+
+.mj-avatar {
+    display: inline-grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 3.25rem;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: var(--bs-warning-bg-subtle);
+    color: var(--bs-warning-text-emphasis);
+    font-weight: 700;
+}
+
+/* ---------- Marcar consulta: grelha de horas ---------- */
+.mj-horas {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(5.25rem, 1fr));
+    gap: .5rem;
+}
+.mj-horas .btn { transition: background-color .15s ease, transform .1s ease; }
+.mj-horas .btn:active { transform: scale(.96); }
+
+/* O resumo acompanha o scroll em ecrãs grandes, abaixo da barra do topo */
+@media (min-width: 992px) {
+    .mj-resumo { position: sticky; top: 5.5rem; }
+}
+
+/* ---------- Lista de consultas ---------- */
+.mj-consulta {
+    --mj-cor: var(--bs-primary);
+    display: grid;
+    grid-template-columns: 5.5rem minmax(0, 1fr) auto;
+    gap: 1rem 1.25rem;
+    align-items: center;
+    padding: 1rem 1.25rem;
+    border-left: .35rem solid var(--mj-cor);
+}
+.mj-consulta[data-estado="confirmada"] { --mj-cor: var(--bs-success); }
+.mj-consulta[data-estado="concluida"]  { --mj-cor: var(--bs-secondary); }
+.mj-consulta[data-estado="cancelada"]  { --mj-cor: var(--bs-danger); opacity: .7; }
+
+.mj-dia {
+    text-align: center;
+    padding-right: 1rem;
+    border-right: 1px dashed var(--bs-border-color);
+}
+.mj-dia b { display: block; font-size: 1.9rem; line-height: 1; color: var(--mj-cor); }
+
+.mj-acoes { display: flex; flex-direction: column; align-items: flex-end; gap: .5rem; }
+
+@media (max-width: 575.98px) {
+    .mj-consulta { grid-template-columns: 4.5rem minmax(0, 1fr); padding: 1rem; }
+    .mj-acoes {
+        grid-column: 1 / -1;
+        flex-flow: row wrap;
+        align-items: center;
+        justify-content: space-between;
+        padding-top: .75rem;
+        border-top: 1px dashed var(--bs-border-color);
+    }
+}
+
+/* ---------- Login / registo com foto ao lado ---------- */
+.mj-auth {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+    min-height: 100vh;
+    min-height: 100dvh;
+}
+.mj-auth-foto {
+    position: relative;
+    isolation: isolate;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: clamp(1.5rem, 4vw, 3rem);
+    color: #fff;
+    background: url("../img/login.jpg") center / cover no-repeat, var(--mj-gradiente);
+}
+.mj-auth-foto::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(180deg, rgba(13, 110, 253, .25) 0%, rgba(6, 24, 56, .88) 100%);
+}
+.mj-auth-foto a { color: inherit; text-decoration: none; }
+.mj-auth-foto blockquote { max-width: 30rem; font-size: clamp(1.15rem, 1.5vw + .6rem, 1.6rem); }
+
+.mj-auth-form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(1.5rem, 5vw, 4rem);
+    background: var(--bs-body-bg);
+}
+.mj-auth-form > div { width: 100%; max-width: 26rem; animation: mj-surgir .5s ease both; }
+
+@keyframes mj-surgir {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: none; }
+}
+
+/* Telemóvel: a foto passa a ser uma faixa por cima do formulário */
+@media (max-width: 991.98px) {
+    .mj-auth { grid-template-columns: 1fr; grid-template-rows: 13rem auto; }
+    .mj-auth-form { align-items: flex-start; }
+    .mj-auth-foto blockquote,
+    .mj-auth-foto figcaption { display: none; }
+}
+
+/* Quem prefere menos movimento não vê animações */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}
